@@ -1,0 +1,13 @@
+FROM python:latest
+
+RUN pip install \
+    psycopg[binary] \
+    Faker=22.5.0 \ 
+    confluent-kafka
+
+WORKDIR /opt/fake_data
+
+COPY requirements.txt /opt/fake_data/
+
+RUN pip install --no-cache-dir -r /opt/fake_data/requirements.txt
+
