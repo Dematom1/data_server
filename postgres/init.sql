@@ -25,7 +25,7 @@ CREATE TABLE events (
 
 
 CREATE TABLE successful_applications (
-    job_application_id int SERIAL PRIMARY KEY,
+    job_application_id int PRIMARY KEY,
     event_time TIMESTAMP WITH TIME ZONE NOT NULL,
     user_id VARCHAR NOT NULL,
     job_uuid VARCHAR(255),

@@ -1,0 +1,15 @@
+CREATE TABLE attributed_successful_applications (
+    job_application_id int,
+    event_time TIMESTAMP WITH TIME ZONE,
+    user_id STRING,
+    job_uuid STRING,
+    job_desc STRING,
+    company_name STRING
+) with (
+    'connector' = '{{connector}}',
+    'url' = '{{url}}',
+    'table-name' : 'job_board.successful_applications',
+    'username': '{{username}}',
+    'password': '{{password}}',
+    'driver': '{{driver}}'
+)
