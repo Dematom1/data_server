@@ -5,7 +5,7 @@ from faker.providers import BaseProvider
 
 fake = Faker()
 
-class JobEvents(BaseProvider):
+class JobEventProvider(BaseProvider):
     __provider__ = "job_event_type"
     __provider__ = "job_template_name"
     __provider__ = "job_element"
@@ -15,7 +15,7 @@ class JobEvents(BaseProvider):
     elements = ['jobCard','tag', 'footer_link']
     job_desc = ['Data Analyst', 'Data Engineer', 'Data Architect', 'Analytics Engineer']
     
-    def job_event_type(self):
+    def job_event_type(self) -> str:
         return self.random_element(
             elements=OrderedDict([
                 (self.event_type[0], 0.80),
@@ -23,7 +23,7 @@ class JobEvents(BaseProvider):
             ])
         )
     
-    def job_template_name(self):
+    def job_template_name(self) -> str:
         return self.random_element(
             elements=OrderedDict([
                 (self.template_name[0], 0.55),
@@ -33,7 +33,7 @@ class JobEvents(BaseProvider):
             unique=False
         )
     
-    def job_element(self):
+    def job_element(self) -> str:
         return self.random_element(
             elements=OrderedDict([
                 (self.elements[0], 0.55),
@@ -42,7 +42,7 @@ class JobEvents(BaseProvider):
             ])
         )
     
-    def job_description(self):
+    def job_description(self)-> str:
         return self.random_element(
             elements=OrderedDict([
                 (self.job_desc[0], 0.50),
@@ -53,6 +53,6 @@ class JobEvents(BaseProvider):
         )
 
 
-fake.add_provider(JobEvents)
+fake.add_provider(JobEventProvider)
 
 

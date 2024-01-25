@@ -1,23 +1,21 @@
-FROM flink:latest
+FROM flink:1.18.1
+ARG FLINK_VERSION=1.18.1
 
-RUN set -ex; \
-  apt-get update; \
-  apt-get -y install python3; \
-  apt-get -y install python3-pip; \
-  apt-get -y install python3-dev; \
-  ln -s /usr/bin/python3 /usr/bin/python; \
-  ln -s /usr/bin/pip3 /usr/bin/pip
+# From apache flink docs for custom build with pyflink
+
+RUN apt-get update -y && \
+    apt-get install -y python3 python3-pip python3-dev && \
+    rm -rf /var/lib/apt/lists/* && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    python -m pip install --upgrade pip; \
+    pip install apache-flink==${FLINK_VERSION}; \
+    pip install kafka-python;
 
 
-RUN set -ex; \
-  apt-get update; \
-  python -m pip install --upgrade pip; \
-  pip install apache-flink
+RUN   wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector/${FLINK_VERSION}/flink-connector-${FLINK_VERSION}.jar && \
+      wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/${FLINK_VERSION}/flink-sql-connector-kafka-${FLINK_VERSION}.jar; \
+      wget -P /opt/flink/lib/ https://jdbc.postgresql.org/download/postgresql-42.2.19.jar
 
-RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka_2.11/1.12.0/flink-sql-connector-kafka_2.11-1.12.0.jar
-RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc_2.11/1.12.0/flink-connector-jdbc_2.11-1.12.0.jar
-RUN wget -P /opt/flink/lib/ https://jdbc.postgresql.org/download/postgresql-42.2.19.jar
 
 COPY requirements.txt /opt/flink/
-
-RUN pip intsall --no-cache-dir -r /opt/flink/requirements.txt
+RUN pip install --no-cache-dir -r /opt/flink/requirements.txt

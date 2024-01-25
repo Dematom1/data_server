@@ -9,10 +9,7 @@ from confluent_kafka import Producer
 
 
 
-
-
-
-fake = Faker()
+from .custom_providers import fake
 
 def gen_fake_user(n_users:int ) -> None:
     for id in range(n_users):
@@ -25,9 +22,9 @@ def gen_fake_user(n_users:int ) -> None:
         curr = conn.cursor()
         curr.execute(
             """INSERT INTO job_board.users
-            (id, first_name, last_name, email) VALUES (%s %s %s %s)
+            (first_name, last_name, email) VALUES (%s, %s, %s)
             """,
-            (id, fake.first_name(), fake.last_name, fake.free_email())
+            (fake.first_name(), fake.last_name(), fake.free_email())
         )
         conn.commit()
         conn.close()

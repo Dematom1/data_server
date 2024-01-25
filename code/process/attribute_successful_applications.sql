@@ -4,7 +4,7 @@ WITH (
     ap.job_application_id,
     ap.
     FROM applications ap
-    JOIN users FOR SYSTEM_TIME AS OF ap.processing_time AS u on user_id
+    JOIN users FOR SYSTEM_TIME AS OF ap.processing_time AS u on ap.user_id = u.user_id
 
 )
     

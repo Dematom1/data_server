@@ -1,6 +1,41 @@
 version: '3'
 
 services:
+
+  jobmanager:
+    container_name: jobmanager
+    build: ./flink/
+    ports: 
+      - "8081:8081"
+      - "9249:9249"
+    command: jobmanager
+    volumes: 
+      - ./code:/opt/flink/code
+      - flink:/var/lib/flink/code
+    environment:
+      - | 
+        FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager
+        parallelism.default: 2
+
+  taskmanager:
+    container_name: taskmanager
+    build: ./flink/
+    command: taskmanager
+    depends_on:
+      - jobmanager
+    scale: 1
+    ports: 
+      - "9250:9249"
+    volumes:
+      - ./code:/opt/flink/code
+      - flink:/var/lib/flink/code
+    environment:
+      - | 
+        FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager
+        taskmanager.numberOfTasksSlots: 2
+        parallelism.default: 2
+
+
   zookeeper:
     image: bitnami/zookeeper:3.9.1
     container_name: zookeeper
@@ -8,6 +43,9 @@ services:
       - "2181:2181"
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_datalog:/var/lib/zookeeper/datalog
 
   kafka:
    image: docker.io/bitnami/kafka:3.4.1
@@ -20,11 +58,14 @@ services:
      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
      - ALLOW_PLAINTEXT_LISTENER='yes'
+    
+   volumes:
+     - kafka:/var/lib/kafka/data
    depends_on:
      - zookeeper 
 
   postgres:
-    image: postgres
+    image: postgres:latest
     container_name: postgres
     env_file:
       - .env
@@ -33,14 +74,16 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      -./postgres/init.sql:/docker-entrypoint.initdb.d/init.sql
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres:/var/lib/postgres/data
 
 
   fake_data:
     container_name: fake_data
     build:
       context: ./fake_data/
-    command: python /opt/fake_data/gen_fake_data.py
+    volumes:
+      - ./fake_data:/opt/fake_data
     restart: on-failure
     depends_on:
       - postgres
@@ -48,3 +91,9 @@ services:
 
   
 
+volumes:
+  flink:
+  zookeeper_data:
+  zookeeper_datalog:
+  kafka:
+  postgres:
