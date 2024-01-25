@@ -7,8 +7,8 @@ from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
 
 REQUIRED_JARS = [
-    "file:///opt/flink/lib/flink-sql-connector-kafka_2.11-1.12.0.jar",
-    "file:///opt/flink/lib/flink-connector-jdbc_2.11-1.12.0.jar",
+    "file:///opt/flink/lib/flink-connector/1.18.1/flink-connector-1.18.1.jar",
+    "file:///opt/flink/lib/flink-sql-connector-kafka/1.18.1/flink-sql-connector-kafka-1.18.1.jar",
     "file:///opt/flink/lib/postgresql-42.2.19.jar"
 ]
 

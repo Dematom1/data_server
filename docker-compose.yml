@@ -84,6 +84,7 @@ services:
       context: ./fake_data/
     volumes:
       - ./fake_data:/opt/fake_data
+      - ./code:/opt/fake_data/code
     restart: on-failure
     depends_on:
       - postgres
