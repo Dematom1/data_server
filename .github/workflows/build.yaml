@@ -19,7 +19,7 @@ jobs:
         with:
           host: ${{ secrets.DATA_HOST_IPS }}
           username: root
-          key: ${{ secrets.ANSBILE_SSH }}
+          key: ${{ secrets.ANSIBLE_SSH }}
           source: "."
           target: "/var/www/datafirstjobs.com"
 
@@ -28,6 +28,6 @@ jobs:
         with:
           host: ${{ secrets.DATA_HOST_IPS }}
           username: root
-          key: ${{ secrets.ANSBILE_SSH }}
+          key: ${{ secrets.ANSIBLE_SSH }}
           script: |
             bash /var/www/datafirstjobs.com/update.sh
