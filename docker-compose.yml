@@ -4,8 +4,9 @@ services:
 
   jobmanager:
     container_name: jobmanager
-    build: 
-      context: ./flink/
+    build:
+      context: ./flink
+      dockerfile: Dockerfile
     ports: 
       - "8081:8081"
       - "9249:9249"
@@ -19,8 +20,9 @@ services:
 
   taskmanager:
     container_name: taskmanager
-    build: 
-      context: ./flink/
+    build:
+      context: ./flink
+      dockerfile: Dockerfile
     command: taskmanager
     depends_on:
       - jobmanager
@@ -70,7 +72,7 @@ services:
     env_file:
       - ../.env
     environment:
-      - POSTGRES_PASSWORD=${PSQL_PASSWORD}
+      - POSTGRES_PASSWORD=${PSQL_PASSWORD}ls 
     ports:
       - "5432:5432"
     volumes:
