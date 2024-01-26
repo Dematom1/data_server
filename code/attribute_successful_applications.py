@@ -1,9 +1,6 @@
 import os
 from typing import List
 from dataclasses import dataclass, field, asdict
-from dotenv import load_dotenv
-
-load_dotenv('../../.env')
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -46,7 +43,7 @@ class PostgresConfig:
     connector: str = 'jdbc'
     url: str = 'jdbc:postgreqsl://postgres:5432/postgres'
     username: str = 'postgres'
-    password: str = psql_password
+    password: str = 'postgres'
     driver: str = 'org.postgreql.Driver'
 
 
