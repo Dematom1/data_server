@@ -21,4 +21,5 @@ jobs:
           username: ansible
           key: ${{ secrets.DATASERVER_GITHUB_SSH }}
           script: |
+            export PSQL_PASSWORD=${{secrets.PSQL_PASSWORD}}
             cd /var/www/dataserver && ./server_deploy.sh

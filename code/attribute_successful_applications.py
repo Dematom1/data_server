@@ -1,3 +1,4 @@
+import os
 from typing import List
 from dataclasses import dataclass, field, asdict
 
@@ -5,6 +6,8 @@ from jinja2 import Environment, FileSystemLoader
 
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.table import StreamTableEnvironment
+
+psql_password = os.environ.get('PSQL_PASSWORD')
 
 REQUIRED_JARS = [
     "file:///opt/flink/lib/flink-connector/1.18.1/flink-connector-1.18.1.jar ",
@@ -40,7 +43,7 @@ class PostgresConfig:
     connector: str = 'jdbc'
     url: str = 'jdbc:postgreqsl://postgres:5432/postgres'
     username: str = 'postgres'
-    password: str = 'postgres'
+    password: str = psql_password
     driver: str = 'org.postgreql.Driver'
 
 
@@ -69,7 +72,7 @@ def map_sql_query(table: str, type: str = 'source', template_env: Environment = 
         'clicks': ClickTopicConfig(),
         'applications': ApplicationTopicConfig(),
         'users' : PostgresUsersTableConfig(),
-        'successful_applications' : PostgresSuccesfulApplicationsTableConfig
+        'successful_applications' : PostgresSuccesfulApplicationsTableConfig()
     }
 
     return template_env.get_template(f'{type}/{table}.sql').render(
