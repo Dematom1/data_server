@@ -23,7 +23,7 @@ docker compose up -d
 Postgres DB needs to be intialized:
 
 ```bash
-docker exec -it postgres -U postgres -d postgres -f /docker-entrypoint.initdb.d/init.sql
+docker exec -it postgres psql -U postgres -d postgres -f /docker_entrypoint.initdb.d/init.sql
 ```
 
 You will now see a users, events, and attributed_sucessful_applications table.

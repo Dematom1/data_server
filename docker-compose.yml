@@ -67,8 +67,6 @@ services:
   postgres:
     image: postgres:latest
     container_name: postgres
-    env_file:
-      - ../.env
     environment:
       - POSTGRES_PASSWORD=postgres
     ports:
@@ -89,10 +87,80 @@ services:
       - postgres
       - kafka
 
-  
+  redis:
+    container_name: redis
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - redis:/var/lib/redis/data
+
+  airflow-worker:
+    container_name: airflow-worker
+    image: bitnami/airflow-worker:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=postgres
+      - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_PASSWORD=postgres
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW_LOAD_EXAMPLES=yes
+    volumes:
+      - ./containers/airflow/dags:/opt/bitnami/airflow/dags
+      - ./containers/airflow/logs:/opt/bitnami/airflow/logs
+      - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
+    depends_on:
+      - postgres
+      - redis
+  airflow-scheduler:
+    container_name: airflow-scheduler
+    image: bitnami/airflow-scheduler:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=postgres
+      - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_PASSWORD=postgres
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW_LOAD_EXAMPLES=yes
+    volumes:
+      - ./containers/airflow/dags:/opt/bitnami/airflow/dags
+      - ./containers/airflow/logs:/opt/bitnami/airflow/logs
+      - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
+    depends_on:
+      - postgres
+      - redis
+
+  airflow:
+    container_name: airflow
+    image: bitnami/airflow:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=postgres
+      - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_PASSWORD=postgres
+      - AIRFLOW_USERNAME=user
+      - AIRFLOW_EMAIL=laszlo@hey.com
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./containers/airflow/dags:/opt/bitnami/airflow/dags
+      - ./containers/airflow/logs:/opt/bitnami/airflow/logs
+      - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
+    depends_on:
+      - airflow-scheduler
+      - postgres
 
 volumes:
   zookeeper_data:
   zookeeper_datalog:
   kafka:
   postgres:
+  redis:
+  airflow:
