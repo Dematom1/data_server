@@ -5,7 +5,7 @@ services:
   jobmanager:
     container_name: jobmanager
     build:
-      context: ./flink/
+      context: ./containers/flink/
     ports:
       - "8081:8081"
       - "9249:9249"
@@ -20,7 +20,7 @@ services:
   taskmanager:
     container_name: taskmanager
     build:
-      context: ./flink/
+      context: ./containers/flink/
     depends_on:
       - jobmanager
     command: taskmanager
@@ -80,10 +80,10 @@ services:
   fake_data:
     container_name: fake_data
     build:
-      context: ./fake_data/
+      context: ./containers/fake_data/
     command: python /opt/fake_data/gen_fake_data.py
     volumes:
-      - ./fake_data:/opt/fake_data
+      - ./containers/fake_data:/opt/fake_data
       - ./code:/opt/fake_data/code
     depends_on:
       - postgres
