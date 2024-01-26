@@ -1,3 +1,4 @@
+[![Build](https://github.com/Dematom1/data_server/actions/workflows/build.yaml/badge.svg?branch=Master)](https://github.com/Dematom1/data_server/actions/workflows/build.yaml)
 #  Data Pipeline Server
 
 This project is an example of a end to end data pipeline. 
