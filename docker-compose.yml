@@ -68,7 +68,7 @@ services:
     image: postgres:latest
     container_name: postgres
     env_file:
-      - /var/www/.env
+      - ../.env
     environment:
       - POSTGRES_PASSWORD=${PSQL_PASSWORD}
     ports:
