@@ -11,3 +11,4 @@ WORKDIR /opt/fake_data
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+CMD ["tail" "-F" "anything"]

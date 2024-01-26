@@ -18,8 +18,8 @@ class JobEventProvider(BaseProvider):
     def job_event_type(self) -> str:
         return self.random_element(
             elements=OrderedDict([
-                (self.event_type[0], 0.80),
-                (self.event_type[1], 0.20),
+                (self.event_types[0], 0.80),
+                (self.event_types[1], 0.20),
             ])
         )
     
@@ -30,7 +30,6 @@ class JobEventProvider(BaseProvider):
                 (self.template_name[1], 0.3),
                 (self.template_name[2], 0.15)
             ]), 
-            unique=False
         )
     
     def job_element(self) -> str:
