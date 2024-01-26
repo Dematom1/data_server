@@ -92,7 +92,6 @@ services:
   
 
 volumes:
-  flink:
   zookeeper_data:
   zookeeper_datalog:
   kafka:
