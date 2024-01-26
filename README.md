@@ -1,34 +1,41 @@
-#  data_server
+#  Data Pipeline Server
 
-Current Python version is 3.11.4
+This project is an example of a end to end data pipeline. 
 
-Make sure you are creating a virtualenv with 3.11.4!
+It has the following:
+- Pyflink
+- Kafka
+    - w/ Zookeeper
+- Postgres
+- Airflow
+- DBT
+- Metabase
 
-Using pyenv
-```zsh
-pyenv install -v 3.11.4
+Normally these services would be spread out across a few VM's, but this is just for demonstraction purposes.
 
-pyenv virtualenv 3.11.4
+## For development
+Pull git repo
+
+```bash
+docker compose up -d
 ```
 
-## Local Development
-To work on your local machine, I recommend to install direnv to seemlessly activate and deactive out of virutalenv for each microservice.
+Postgres DB needs to be intialized:
 
-```zsh
-brew install direnv
+```bash
+docker exec -it postgres -U postgres -d postgres -f /docker-entrypoint.initdb.d/init.sql
 ```
 
-Add to your shell configuration file
-```zsh
-vim ~/.zshrc
+You will now see a users, events, and attributed_sucessful_applications table.
 
-eval "$(direnv hook pyenv)"
+The central point of this setup is to simulate click events and successfully attributing successful job applications to users from these events process in "real-time" through flink.
 
-# Go to your directory
-layout pyenv 3.11.4
+To run the script:
 
-direnv allow
-
-# You may need to restart your terminal or simply:
-source ~/.zshrc # or ~/.zashrc etc
+```bash
+docker exec jobmanager ./bin/flink run --python .code/attribute_successful_applications
 ```
+
+It will generate 500 users, and simulate 2000 click events. 
+
+

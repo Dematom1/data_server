@@ -77,11 +77,11 @@ services:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - postgres:/var/lib/postgres/data
 
-
   fake_data:
     container_name: fake_data
     build:
       context: ./fake_data/
+    command: python /opt/fake_data/gen_fake_data.py
     volumes:
       - ./fake_data:/opt/fake_data
       - ./code:/opt/fake_data/code
