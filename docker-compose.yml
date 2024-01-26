@@ -68,7 +68,7 @@ services:
     image: postgres:latest
     container_name: postgres
     env_file:
-      - .env
+      - /var/www/.env
     environment:
       - POSTGRES_PASSWORD=${PSQL_PASSWORD}
     ports:
@@ -85,7 +85,6 @@ services:
     volumes:
       - ./fake_data:/opt/fake_data
       - ./code:/opt/fake_data/code
-    restart: on-failure
     depends_on:
       - postgres
       - kafka
