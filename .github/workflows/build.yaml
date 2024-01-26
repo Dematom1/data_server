@@ -18,7 +18,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.DATA_HOST_IPS }}
-          username: root
+          username: ansible
           key: ${{ secrets.DATASERVER_GITHUB_SSH }}
           script: |
             bash cd /var/www/dataserver && ./server_deploy.sh
