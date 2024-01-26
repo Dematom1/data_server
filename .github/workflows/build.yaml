@@ -21,4 +21,4 @@ jobs:
           username: ansible
           key: ${{ secrets.DATASERVER_GITHUB_SSH }}
           script: |
-            bash cd /var/www/dataserver && ./server_deploy.sh
+            cd /var/www/dataserver && ./server_deploy.sh
