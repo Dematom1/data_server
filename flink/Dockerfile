@@ -12,10 +12,8 @@ RUN apt-get update -y && \
     pip install apache-flink==${FLINK_VERSION}
 
 
+RUN wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/1.17.0/flink-sql-connector-kafka-1.17.0.jar && wget https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector-jdbc/3.0.0-1.16/flink-connector-jdbc-3.0.0-1.16.jar && wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar
 
-RUN wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-connector/${FLINK_VERSION}/flink-connector-${FLINK_VERSION}.jar && \
-    wget -P /opt/flink/lib/ https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/${FLINK_VERSION}/flink-sql-connector-kafka-${FLINK_VERSION}.jar && \
-    wget -P /opt/flink/lib/ https://jdbc.postgresql.org/download/postgresql-42.2.19.jar
 
 COPY requirements.txt /opt/flink/
 RUN pip install --no-cache-dir -r /opt/flink/requirements.txt
