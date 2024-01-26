@@ -18,24 +18,24 @@ services:
         FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager
         parallelism.default: 2
 
-  taskmanager:
-    container_name: taskmanager
-    build:
-      context: /var/www/dataserver/flink
-      dockerfile: Dockerfile
-    command: taskmanager
-    depends_on:
-      - jobmanager
-    scale: 1
-    ports: 
-      - "9250:9249"
-    volumes:
-      - ./code:/opt/flink/code
-    environment:
-      - | 
-        FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTasksSlots: 2
-        parallelism.default: 2
+  # taskmanager:
+  #   container_name: taskmanager
+  #   build:
+  #     context: /var/www/dataserver/flink
+  #     dockerfile: Dockerfile
+  #   command: taskmanager
+  #   depends_on:
+  #     - jobmanager
+  #   scale: 1
+  #   ports: 
+  #     - "9250:9249"
+  #   volumes:
+  #     - ./code:/opt/flink/code
+  #   environment:
+  #     - | 
+  #       FLINK_PROPERTIES=jobmanager.rpc.address: jobmanager
+  #       taskmanager.numberOfTasksSlots: 2
+  #       parallelism.default: 2
 
 
   zookeeper:
