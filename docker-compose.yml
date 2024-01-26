@@ -5,7 +5,7 @@ services:
   jobmanager:
     container_name: jobmanager
     build:
-      context: /var/wwww/dataserver/flink
+      context: /var/www/dataserver/flink
       dockerfile: Dockerfile
     ports: 
       - "8081:8081"
@@ -21,7 +21,7 @@ services:
   taskmanager:
     container_name: taskmanager
     build:
-      context: /var/wwww/dataserver/flink
+      context: /var/www/dataserver/flink
       dockerfile: Dockerfile
     command: taskmanager
     depends_on:
