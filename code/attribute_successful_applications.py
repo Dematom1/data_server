@@ -1,6 +1,9 @@
 import os
 from typing import List
 from dataclasses import dataclass, field, asdict
+from dotenv import load_dotenv
+
+load_dotenv('../../.env')
 
 from jinja2 import Environment, FileSystemLoader
 
