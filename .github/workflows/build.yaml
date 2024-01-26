@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push: 
+    branches: 
+      - Master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Copy files to VPS
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.DATA_HOST_IPS }}
+        username: root
+        key: ${{ secrets.ANSIBLE_DFJOBS_SSH }}
+        source: "."
+        target: "/var/www/datafirstjobs.com"
+
+    - name: Execute deployment commands
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.DATA_HOST_IPS }}
+        username: root
+        key: ${{ secrets.ANSIBLE_DFJOBS_SSH }}
+        script: |
+          bash /var/www/datafirstjobs.com/update.sh 
