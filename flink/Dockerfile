@@ -1,5 +1,5 @@
-FROM flink:1.17.0
-ARG FLINK_VERSION=1.17.0
+FROM flink:1.18.1
+ARG FLINK_VERSION=1.18.1
 
 # From apache flink docs for custom build with pyflink
 
