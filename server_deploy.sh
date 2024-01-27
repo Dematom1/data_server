@@ -9,4 +9,4 @@ docker-compose build --no-cache
 docker-compose up -d
 echo "docker up"
 
-echo "🚀 Deployment Successful "
+echo "🚀 Deployment Successful"
