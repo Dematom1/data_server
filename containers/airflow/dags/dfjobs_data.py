@@ -23,11 +23,11 @@ with DAG(
 
     @task()
     def fetch_api_sources():
-        api_url = "https://datafirstjobs/api/sources"
+        api_url = "https://datafirstjobs/api/sources/"
 
         headers = {
             'Content-Type': 'application/json',
-            'Authorization' : ''
+            'Authorization' : 'Token c5b547b5718c4bd41f50c95d90c03b8bb926a6b6'
             # Include 'Authorization': 'Bearer YOUR_ACCESS_TOKEN' if needed
         }
 
@@ -72,7 +72,7 @@ with DAG(
         url = 'https://datafirstjobs.com/api/create-jobs'
         headers = {
             'Content-Type': 'application/json',
-            # Include 'Authorization': 'Bearer YOUR_ACCESS_TOKEN' if needed
+            'Authorization' : 'Token c5b547b5718c4bd41f50c95d90c03b8bb926a6b6'
         }
         body = processor.job_data_list
         try:
@@ -88,7 +88,7 @@ with DAG(
     for source in sources:
         source, data = pull_api_data(sources)
         processor = transform_data(source, data)
-        post_to_api(processor)
+        # post_to_api(processor)
         
         
 
