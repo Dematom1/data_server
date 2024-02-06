@@ -107,6 +107,7 @@ services:
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_LOAD_EXAMPLES=yes
+      - AIRFLOW_WEBSERVER_HOST=airflow
     volumes:
       - ./containers/airflow/dags:/opt/bitnami/airflow/dags
       - ./containers/airflow/logs:/opt/bitnami/airflow/logs
@@ -126,6 +127,7 @@ services:
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_LOAD_EXAMPLES=yes
+      - AIRFLOW_WEBSERVER_HOST=airflow
     volumes:
       - ./containers/airflow/dags:/opt/bitnami/airflow/dags
       - ./containers/airflow/logs:/opt/bitnami/airflow/logs
