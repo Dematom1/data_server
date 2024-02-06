@@ -8,6 +8,8 @@ from airflow.operators.python import PythonOperator
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2024, 1, 1),
+    'email' : ['laszlo@hey.com'],
+    'scehdule_interval': '@daily'
 }
 
 def fetch_data():
@@ -28,5 +30,5 @@ def post_data_to_api(**kwargs):
     # Make POST request to your API
     pass
 
-with DAG(dag_id='4dayweek_api_pull', default_args=default_args, start_date=datetime(2024, 1, 30), schedule="0 0 * *") as dag:
+with DAG(dag_id='4dayweek_api_pull', default_args=default_args, start_date=datetime(2024, 1, 31), schedule="0 0 * *") as dag:
     pass
