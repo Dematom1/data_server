@@ -108,11 +108,11 @@ services:
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
       - AIRFLOW_LOAD_EXAMPLES=no
-      - PYTHONPATH=/opt/bitnami/airflow:$PYTHONPATH
     volumes:
       - ./containers/airflow/dags:/opt/bitnami/airflow/dags
       - ./containers/airflow/logs:/opt/bitnami/airflow/logs
       - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
+      - ./containers/airflow/includes:/opt/bitnami/airflow/includes
     depends_on:
       - postgres
       - redis
@@ -129,11 +129,11 @@ services:
       - AIRFLOW_LOAD_EXAMPLES=no
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
-      - PYTHONPATH=/opt/bitnami/airflow:$PYTHONPATH
     volumes:
       - ./containers/airflow/dags:/opt/bitnami/airflow/dags
       - ./containers/airflow/logs:/opt/bitnami/airflow/logs
       - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
+      - ./containers/airflow/includes:/opt/bitnami/airflow/includes
     depends_on:
       - postgres
       - redis
@@ -151,11 +151,11 @@ services:
       - AIRFLOW_USERNAME=user
       - AIRFLOW_EMAIL=laszlo@hey.com
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
-      - PYTHONPATH=/opt/bitnami/airflow:$PYTHONPATH
     ports:
       - '8080:8080'
     volumes:
       - ./containers/airflow/dags:/opt/bitnami/airflow/dags
+      - ./containers/airflow/includes:/opt/bitnami/airflow/includes
       - ./containers/airflow/logs:/opt/bitnami/airflow/logs
       - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
     depends_on:
