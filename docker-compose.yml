@@ -95,6 +95,29 @@ services:
     volumes:
       - redis:/var/lib/redis/data
 
+  airflow:
+    container_name: airflow
+    image: bitnami/airflow:latest
+    environment:
+      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
+      - AIRFLOW_EXECUTOR=CeleryExecutor
+      - AIRFLOW_DATABASE_NAME=postgres
+      - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_PASSWORD=postgres
+      - AIRFLOW_USERNAME=user
+      - AIRFLOW_EMAIL=laszlo@hey.com
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./containers/airflow/dags:/opt/bitnami/airflow/dags
+      - ./containers/airflow/includes:/opt/bitnami/airflow/includes
+      - ./containers/airflow/logs:/opt/bitnami/airflow/logs
+      - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
+    depends_on:
+      - postgres
+
   airflow-worker:
     container_name: airflow-worker
     image: bitnami/airflow-worker:latest
@@ -105,7 +128,7 @@ services:
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
-      # - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
       - AIRFLOW_LOAD_EXAMPLES=no
     volumes:
@@ -137,30 +160,6 @@ services:
     depends_on:
       - postgres
       - redis
-
-  airflow:
-    container_name: airflow
-    image: bitnami/airflow:latest
-    environment:
-      - AIRFLOW_FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
-      - AIRFLOW_SECRET_KEY=a25mQ1FHTUh3MnFRSk5KMEIyVVU2YmN0VGRyYTVXY08=
-      - AIRFLOW_EXECUTOR=CeleryExecutor
-      - AIRFLOW_DATABASE_NAME=postgres
-      - AIRFLOW_DATABASE_USER=postgres
-      - AIRFLOW_DATABASE_PASSWORD=postgres
-      - AIRFLOW_USERNAME=user
-      - AIRFLOW_EMAIL=laszlo@hey.com
-      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
-    ports:
-      - '8080:8080'
-    volumes:
-      - ./containers/airflow/dags:/opt/bitnami/airflow/dags
-      - ./containers/airflow/includes:/opt/bitnami/airflow/includes
-      - ./containers/airflow/logs:/opt/bitnami/airflow/logs
-      - ./containers/airflow/plugins:/opt/bitnami/airflow/plugins
-    depends_on:
-      - airflow-scheduler
-      - postgres
 
 volumes:
   zookeeper_data:
