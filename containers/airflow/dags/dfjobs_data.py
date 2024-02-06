@@ -1,9 +1,12 @@
-import datetime
+import sys
 import requests
+from datetime import datetime
 
-from airflow import DAG, task
+from airflow import DAG
+from airflow.decorators import task
 from airflow.models import Variable
 
+sys.path.append('/opt/bitnami/airflow/includes')
 from includes.job_boards.api_call import SourceProcessor
 
 
