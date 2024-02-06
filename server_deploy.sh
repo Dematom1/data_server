@@ -2,7 +2,7 @@
 set -e
 echo "Deploying application...."
 
-git pull 
+sudo git pull 
 docker-compose down 
 echo "docker down"
 # docker-compose build --no-cache
