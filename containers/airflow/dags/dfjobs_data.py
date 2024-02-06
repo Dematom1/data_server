@@ -3,10 +3,8 @@ import requests
 
 from airflow import DAG, task
 from airflow.models import Variable
-from airflow.operators.python import PythonOperator
-from airflow.providers.http.operators.http import SimpleHttpOperator
 
-from job_boards.api_call import SourceProcessor
+from includes.job_boards.api_call import SourceProcessor
 
 
 default_args = {
