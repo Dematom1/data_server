@@ -107,7 +107,7 @@ services:
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW_USERNAME=user
       - AIRFLOW_EMAIL=laszlo@hey.com
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgresql:5432/postgres
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
     ports:
       - '8080:8080'
     volumes:
@@ -128,7 +128,7 @@ services:
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgresql:5432/postgres
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
       - AIRFLOW_LOAD_EXAMPLES=no
     volumes:
@@ -150,7 +150,7 @@ services:
       - AIRFLOW_DATABASE_USER=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW_LOAD_EXAMPLES=no
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgresql:5432/postgres
+      - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
     volumes:
       - ./containers/airflow/dags:/opt/bitnami/airflow/dags
