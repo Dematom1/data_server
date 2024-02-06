@@ -82,13 +82,15 @@ with DAG(
 
         return True
     
-    sources = fetch_api_sources()
-
-    for source in sources:
-        source, data = pull_api_data(sources)
-        processor = transform_data(source, data)
-        # post_to_api(processor)
+    @task()
+    def process_sources(sources):
+        for source in sources:
+            source, data = pull_api_data(sources)
+            processor = transform_data(source, data)
+            # post_to_api(processor)
         
+    sources = fetch_api_sources()
+    process_sources(sources)
         
 
     dag_instance = dag()
