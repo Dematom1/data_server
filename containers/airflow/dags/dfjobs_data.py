@@ -9,8 +9,6 @@ from airflow.providers.http.operators.http import SimpleHttpOperator
 from job_boards.api_call import SourceProcessor
 
 
-source_config = Variable.get('sources', deserialize_json=True)
-
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2024, 1, 1),
