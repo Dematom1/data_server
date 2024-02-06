@@ -92,5 +92,3 @@ with DAG(
     sources = fetch_api_sources()
     process_sources(sources)
         
-
-    dag_instance = dag()
