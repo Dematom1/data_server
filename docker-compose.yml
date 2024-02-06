@@ -128,6 +128,7 @@ services:
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
+      - AIRFLOW_DATABASE_HOST=postgres
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
       - AIRFLOW_LOAD_EXAMPLES=no
@@ -149,6 +150,7 @@ services:
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
+      - AIRFLOW_DATABASE_HOST=postgres
       - AIRFLOW_LOAD_EXAMPLES=no
       - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
       - AIRFLOW_WEBSERVER_HOST=airflow
