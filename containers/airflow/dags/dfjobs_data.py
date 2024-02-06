@@ -7,7 +7,7 @@ from airflow.decorators import task
 from airflow.models import Variable
 
 sys.path.append('/opt/bitnami/airflow/includes')
-from includes.job_boards.api_call import SourceProcessor
+from job_boards.api_call import SourceProcessor
 
 
 default_args = {
