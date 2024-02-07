@@ -57,9 +57,9 @@ with DAG(
 
     
     @task()
-    def transform_data(source, data):
-        processor = SourceProcessor(source)
-        processor.preprocess_data(data)
+    def transform_data(data):
+        processor = SourceProcessor(data['api_url'])
+        processor.preprocess_data(data['parsing_instructions'])
 
         return processor
     
