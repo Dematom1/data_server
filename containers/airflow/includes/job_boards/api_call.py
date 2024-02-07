@@ -7,8 +7,8 @@ from airflow.models import Variable
 
 
 class SourceProcessor:
-    def __init__(self, source, data, **kwargs):
-        self.source = source
+    def __init__(self, data, **kwargs):
+        self.data = data | []
         self.job_data_list = []
         self.tags = Variable.get('tags')
         self.tag_values = Variable.get('tag_values',[])
@@ -27,7 +27,7 @@ class SourceProcessor:
 
     def process_single_item(self, item):
         job = {}
-        for key, value in self.source.parsing_instructions.items():
+        for key, value in self.parsing_instructions.items():
             job[key] = self.extract_and_assign(value, item, key)
         self.extract_tags(job)
         return job

@@ -45,20 +45,18 @@ with DAG(
         params = source.params
         
         try:
-            response = requests.get(url)
+            response = requests.get(url, params=params)
             response.raise_for_status()
         except requests.RequestException as e:
             raise Exception(f"Failed to pull data from api: {e}")
-
-        desired_roles = ['data', 'analytics', 'analyst']
         
         data = response.json()
-        return source, data
+        return data
 
     
     @task()
     def transform_data(data):
-        processor = SourceProcessor(data['api_url'])
+        processor = SourceProcessor(data)
         processor.preprocess_data(data['parsing_instructions'])
 
         return processor
@@ -84,7 +82,7 @@ with DAG(
     @task()
     def process_sources(sources):
         for source in sources:
-            data = pull_api_data(sources)
+            data = pull_api_data(source)
             processor = transform_data(data)
             # post_to_api(processor)
         
