@@ -84,8 +84,8 @@ with DAG(
     @task()
     def process_sources(sources):
         for source in sources:
-            source, data = pull_api_data(sources)
-            processor = transform_data(source, data)
+            data = pull_api_data(sources)
+            processor = transform_data(data)
             # post_to_api(processor)
         
     sources = fetch_api_sources()
