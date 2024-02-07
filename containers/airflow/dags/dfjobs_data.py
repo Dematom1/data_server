@@ -57,7 +57,7 @@ with DAG(
     @task()
     def transform_data(data):
         processor = SourceProcessor(data)
-        processor.preprocess_data(data['parsing_instructions'])
+        processor.preprocess_data()
 
         return processor
     
@@ -81,9 +81,12 @@ with DAG(
     
     @task()
     def process_sources(sources):
+        sources = fetch_api_sources()
+        processed_data = []
         for source in sources:
             data = pull_api_data(source)
             processor = transform_data(data)
+            processed_data.append('done')
             # post_to_api(processor)
         
     sources = fetch_api_sources()
