@@ -39,7 +39,7 @@ with DAG(
         return sources
 
 
-    @task()
+    @task(multiple_outputs=True)
     def pull_api_data(source):
         url = source.api_url
         params = source.params
