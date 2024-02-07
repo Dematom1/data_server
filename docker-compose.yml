@@ -104,6 +104,7 @@ services:
       - AIRFLOW_EXECUTOR=CeleryExecutor
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_USERNAME=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW_USERNAME=user
       - AIRFLOW_EMAIL=laszlo@hey.com
@@ -127,6 +128,7 @@ services:
       - AIRFLOW_EXECUTOR=CeleryExecutor
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_USERNAME=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW_DATABASE_HOST=postgres
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres:postgres@postgres:5432/postgres
@@ -149,6 +151,7 @@ services:
       - AIRFLOW_EXECUTOR=CeleryExecutor
       - AIRFLOW_DATABASE_NAME=postgres
       - AIRFLOW_DATABASE_USER=postgres
+      - AIRFLOW_DATABASE_USERNAME=postgres
       - AIRFLOW_DATABASE_PASSWORD=postgres
       - AIRFLOW_DATABASE_HOST=postgres
       - AIRFLOW_LOAD_EXAMPLES=no
