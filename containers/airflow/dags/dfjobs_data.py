@@ -22,12 +22,11 @@ with DAG(
 
     @task()
     def fetch_api_sources():
-        api_url = "https://datafirstjobs/api/sources/"
+        api_url = "https://www.datafirstjobs.com/api/sources/"
 
         headers = {
             'Content-Type': 'application/json',
             'Authorization' : 'Token c5b547b5718c4bd41f50c95d90c03b8bb926a6b6'
-            # Include 'Authorization': 'Bearer YOUR_ACCESS_TOKEN' if needed
         }
 
         try:
