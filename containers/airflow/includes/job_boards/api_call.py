@@ -7,22 +7,27 @@ from airflow.models import Variable
 
 
 class SourceProcessor:
-    def __init__(self, data, **kwargs):
-        self.data = data | []
+    def __init__(self, data, metadata, source,parsing_instructions, **kwargs):
+        self.data = data
+        self.metadata = metadata
+        self.source = source
+        self.parsing_instructions = parsing_instructions
         self.job_data_list = []
-        self.tags = Variable.get('tags')
-        self.tag_values = Variable.get('tag_values',[])
-        self.regions = Variable.get('regions', [])
-        self.countries = Variable.get('countries', [])
-        self.states = Variable.get('states', [])
+        self.tags = metadata.get('tags')
+        self.tag_values = [tag['name'] for tag in self.tags]
+        self.regions = metadata.get('region', [])
+        self.countries = metadata.get('country', [])
+        self.states = metadata.get('state', [])
         # Other attributes...
     
     def extract_data(self, item, path):
         jsonpath_expr = parse(path)
         return [match.value for match in jsonpath_expr.find(item)]
     
-    def preprocess_data(self, data):
-        for item in data:
+    def preprocess_data(self):
+        print(f"data:{self.data}")
+        for item in self.data:
+            print(f"Hello: {item}")
             self.job_data_list.append(self.process_single_item(item))
 
     def process_single_item(self, item):
@@ -61,7 +66,7 @@ class SourceProcessor:
         matched_tags = set()
         job_content_lower = job_content.lower()  # Convert job content to lowercase
         for tag in self.tag_values:
-            if re.search(r'\b{}\b'.format(re.escape(tag)), job_content_lower):
+            if re.search(r'\b{}\b'.format(re.escape(tag.lower())), job_content_lower):
                 matched_tags.add(tag)
         return list(matched_tags)
 
