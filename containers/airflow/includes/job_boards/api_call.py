@@ -7,14 +7,14 @@ from airflow.models import Variable
 
 
 class SourceProcessor:
-    def __init__(self, data, metadata, source,parsing_instructions, **kwargs):
+    def __init__(self, data, metadata, parsing_instructions, content_tags, **kwargs):
         self.data = data
         self.metadata = metadata
-        self.source = source
         self.parsing_instructions = parsing_instructions
         self.job_data_list = []
         self.tags = metadata.get('tags')
-        self.tag_values = [tag['name'] for tag in self.tags]
+        self.tag_values = [tag['name'] for tag in self.tags] # May not be needed
+        self.content_tags =  [tag['name'] for tag in metadata['tags'] if tag['category'] in (2,5,6)]
         self.regions = metadata.get('region', [])
         self.countries = metadata.get('country', [])
         self.states = metadata.get('state', [])
@@ -65,7 +65,7 @@ class SourceProcessor:
     def find_matching_tags(self, job_content):
         matched_tags = set()
         job_content_lower = job_content.lower()  # Convert job content to lowercase
-        for tag in self.tag_values:
+        for tag in self.content_tags:
             if re.search(r'\b{}\b'.format(re.escape(tag.lower())), job_content_lower):
                 matched_tags.add(tag)
         return list(matched_tags)

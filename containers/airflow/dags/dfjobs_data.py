@@ -77,9 +77,6 @@ def dynamic_job_api_calls():
         processor = SourceProcessor(data, metadata, source, parsing_instructions)
         processor.preprocess_data()
     
-        lst = processor.job_data_list
-        print(f"type:{type(processor.job_data_list)}")
-        print(f"type:{type(lst)}")
         
         return processor.job_data_list
     
