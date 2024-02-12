@@ -15,6 +15,7 @@ class SourceProcessor:
         self.tags = metadata.get('tags')
         self.tag_values = [tag['name'] for tag in self.tags] # May not be needed
         self.content_tags =  [tag['name'] for tag in metadata['tags'] if tag['category'] in (2,5,6)]
+        self.title_tags = [tag['name'] for tag in metadata['tags'] if tag['category'] in (3,4)]
         self.regions = metadata.get('region', [])
         self.countries = metadata.get('country', [])
         self.states = metadata.get('state', [])
@@ -57,16 +58,24 @@ class SourceProcessor:
             return nested_result
 
     def extract_tags(self, job):
+        # TODO: Make this more DRY
+        role = job.get('role','').lower()
         content = job.get('content', '').lower()
-        content = re.sub(r'\W+', ' ', content)  # Replace non-word chars with space
+
+        role_content = re.sub(r'\W+', ' ', role)  
+        content = re.sub(r'\W+', ' ', content) 
         job['additional_tags'] = self.find_matching_tags(content)
+        job['additional_tags'] += self.find_matching_tags(role, True)
 
     
-    def find_matching_tags(self, job_content):
+    def find_matching_tags(self, job_content, is_role=False):
         matched_tags = set()
-        job_content_lower = job_content.lower()  # Convert job content to lowercase
+        if is_role:
+            for tag in self.title_tags:
+                if re.search(r'\b{}\b'.format(re.escape(tag.lower())), job_content):
+                    matched_tags.add(tag)
         for tag in self.content_tags:
-            if re.search(r'\b{}\b'.format(re.escape(tag.lower())), job_content_lower):
+            if re.search(r'\b{}\b'.format(re.escape(tag.lower())), job_content):
                 matched_tags.add(tag)
         return list(matched_tags)
 
