@@ -9,26 +9,33 @@ from pyflink.table import StreamTableEnvironment
 
 psql_password = os.environ.get('PSQL_PASSWORD')
 
+# REQUIRED_JARS = [
+#     "file:///opt/flink/lib/flink-connector/1.18.1/flink-connector-1.17.0.jar",
+#     "file:///opt/flink/lib/flink-sql-connector-kafka/1.18.1/flink-sql-connector-kafka-1.18.1.jar",
+#     "file:///opt/flink/lib/postgresql-42.6.0.jar"
+# ]
 REQUIRED_JARS = [
-    "file:///opt/flink/lib/flink-connector/1.18.1/flink-connector-1.18.1.jar ",
-    "file:///opt/flink/lib/flink-sql-connector-kafka/1.18.1/flink-sql-connector-kafka-1.18.1.jar ",
-    "file:///opt/flink/lib/postgresql-42.2.19.jar"
+    "file:///opt/flink/flink-sql-connector-kafka-1.17.0.jar",
+    "file:///opt/flink/flink-connector-jdbc-3.0.0-1.16.jar",
+    "file:///opt/flink/postgresql-42.6.0.jar",
 ]
 
 @dataclass(frozen=True)
 class FlinkJobConfig:
     job_name: str = 'successful-job-applications'
     jars: List[str] = field(default_factory=lambda: REQUIRED_JARS)
+    parallelism: int = 2
 
 
 @dataclass(frozen=True)
 class KafkaConfig:
     connector: str = 'kafka'
-    bootstrap_servers: str = 'kafka:9094'
+    bootstrap_servers: str = 'kafka:9092'
+    scan_stratup_mode: str = 'earliest-offset'
     consumer_group_id: str = 'flink-consumer-group-1'
 
 @dataclass(frozen=True)
-class ClickTopicConfig(KafkaConfig):
+class ClickEventTopicConfig(KafkaConfig):
     topic: str = 'clicks'
     format: str = 'json'
 
@@ -41,10 +48,10 @@ class ApplicationTopicConfig(KafkaConfig):
 @dataclass(frozen=True)
 class PostgresConfig:
     connector: str = 'jdbc'
-    url: str = 'jdbc:postgreqsl://postgres:5432/postgres'
+    url: str = 'jdbc:postgresql://postgres:5432/postgres'
     username: str = 'postgres'
     password: str = 'postgres'
-    driver: str = 'org.postgreql.Driver'
+    driver: str = 'org.postgresql.Driver'
 
 
 @dataclass(frozen=True)
@@ -69,10 +76,11 @@ def get_exec_env(config: FlinkJobConfig) -> tuple:
 
 def map_sql_query(table: str, type: str = 'source', template_env: Environment = Environment(loader=FileSystemLoader('code/'))) -> str:
     config_map = {
-        'clicks': ClickTopicConfig(),
+        'clicks': ClickEventTopicConfig(),
         'applications': ApplicationTopicConfig(),
         'users' : PostgresUsersTableConfig(),
-        'successful_applications' : PostgresSuccesfulApplicationsTableConfig()
+        'successful_applications' : PostgresConfig(),
+        'attribute_successful_applications': PostgresSuccesfulApplicationsTableConfig()
     }
 
     return template_env.get_template(f'{type}/{table}.sql').render(
@@ -83,13 +91,16 @@ def run_successful_applications_job(
         table_env: StreamTableEnvironment,
         map_sql_query=map_sql_query
 ) -> None:
+
+
     table_env.execute_sql(map_sql_query('clicks'))
     table_env.execute_sql(map_sql_query('applications'))
     table_env.execute_sql(map_sql_query('users'))
 
-    table_env.execute_sql(map_sql_query('attributed_successful_applications','sink'))
+    table_env.execute_sql(map_sql_query('successful_applications','sink'))
 
-    process = table_env.execute_sql(map_sql_query('attribute_successful_applications', 'process'))
+    process = table_env.create_statement_set()
+    process.add_insert_sql(map_sql_query('attribute_successful_applications', 'process'))
 
     job  = process.execute()
     print(f"Successful Job Applications Attritbution status: {job.get_job_client().get_job_status()}")

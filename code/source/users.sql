@@ -1,12 +1,14 @@
-CREATE TABLE users {
+CREATE TABLE users (
     id INT,
     first_name STRING,
     last_name STRING,
     email STRING
-} with (
+) with (
     'connector' = '{{connector}}',
-    'boostrap_servers' = '{{bootstap_servers}}',
-    'topic' = '{{topic}}',
-    'format' = '{{format}}',
+    'url' = '{{url}}',
+    'table-name' = '{{table_name}}',
+    'username' = '{{username}}',
+    'password' = '{{password}}',
+    'driver' = '{{driver}}'
 )
 
