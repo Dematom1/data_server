@@ -12,7 +12,7 @@ class JobEventProvider(BaseProvider):
     __provider__ = "job_description"
     event_types = ["click", "reload"]
     template_name = ['/','job_search','job_detail']
-    elements = ['jobCard','tag', 'footer_link']
+    elements = ['div.jobCard','div.tag', 'a.footer_link']
     job_desc = ['Data Analyst', 'Data Engineer', 'Data Architect', 'Analytics Engineer']
     
     def job_event_type(self) -> str:
