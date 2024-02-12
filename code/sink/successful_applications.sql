@@ -1,10 +1,13 @@
 CREATE TABLE attributed_successful_applications (
     job_application_id int,
-    event_time TIMESTAMP WITH TIME ZONE,
-    user_id STRING,
+    username STRING,
+    event_id STRING,
+    ip_address STRING,
     job_uuid STRING,
-    job_desc STRING,
-    company_name STRING
+    job_title STRING,
+    company_name STRING,
+    applied_at TIMESTAMP WITH TIME ZONE
+    click_time TIMESTAMP WITH TIME ZONE
 ) with (
     'connector' = '{{connector}}',
     'url' = '{{url}}',

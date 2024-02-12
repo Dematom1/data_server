@@ -33,7 +33,7 @@ def gen_click_event(user_id: str, job_uuid:str = None) -> dict:
         event_type: str = 'click' if job_uuid else fake.job_event_type()
         template_name: str  = 'job_detail' if job_uuid else fake.job_template_name()
         element: str = 'apply' if job_uuid else fake.job_element()
-        job_uuid: str = job_uuid or str(uuid4())
+        job_id: str = job_uuid or str(uuid4())
         ip_address: str = fake.ipv4()
         
         click_event = {

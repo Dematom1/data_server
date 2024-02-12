@@ -5,6 +5,7 @@ CREATE TABLE clicks (
     event_type STRING,
     template_name STRING,
     element STRING,
+    job_ib STRING,
     user_id STRING,
     ip_address STRING,
     processing_time AS PROCTIME(),
