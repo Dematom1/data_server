@@ -33,7 +33,7 @@ services:
       - |
         FLINK_PROPERTIES=
         jobmanager.rpc.address: jobmanager
-        taskmanager.numberOfTaskSlots: 2 
+        taskmanager.numberOfTaskSlots: 2
 
 
   zookeeper:
@@ -58,7 +58,6 @@ services:
      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
      - ALLOW_PLAINTEXT_LISTENER='yes'
-    
    volumes:
      - kafka:/var/lib/kafka/data
    depends_on:

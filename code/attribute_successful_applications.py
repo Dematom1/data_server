@@ -69,7 +69,7 @@ def get_exec_env(config: FlinkJobConfig) -> tuple:
         s_env.add_jars(jar)
     
     execution_config = s_env.get_config()
-    execution_config.set_parallelism(5000)
+    execution_config.set_parallelism(2)
     t_env = StreamTableEnvironment.create(s_env)
     return s_env, t_env
 
