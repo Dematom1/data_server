@@ -88,6 +88,20 @@ def run_successful_applications_job(
     table_env.execute_sql(map_sql_query('users'))
 
     table_env.execute_sql(map_sql_query('attributed_successful_applications','sink'))
+
+    process = table_env.execute_sql(map_sql_query('attribute_successful_applications', 'process'))
+
+    job  = process.execute()
+    print(f"Successful Job Applications Attritbution status: {job.get_job_client().get_job_status()}")
+
+
+
+if __name__ == '__main__':
+    _, t_env = get_exec_env(FlinkJobConfig())
+    run_successful_applications_job(t_env)
+
+
+
     
     
 
