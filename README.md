@@ -21,22 +21,37 @@ Pull git repo
 docker compose up -d
 ```
 
-Postgres DB needs to be intialized:
+Postgres DB will be initialized
+You will see a users, events, and attributed_sucessful_applications table.
 
-```bash
-docker exec -it postgres psql -U postgres -d postgres -f /docker_entrypoint.initdb.d/init.sql
-```
 
-You will now see a users, events, and attributed_sucessful_applications table.
+A seperate process will generate users, click events, and job applicaiton events, the proceed to populate the tables.
+
+It will generate 500 users, and 2000 click events. 
 
 The central point of this setup is to simulate click events and successfully attributing successful job applications to users from these events process in "real-time" through flink.
 
-To run the script:
+First create the Kafka Topics
 
 ```bash
-docker exec jobmanager ./bin/flink run --python .code/attribute_successful_applications
+docker exec -it kafka /bin/bash
+
+kafka-topics.sh --create --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1 --topic clicks 
+
+kafka-topics.sh --create --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1 --topic applications
+
+exit
 ```
 
-It will generate 500 users, and simulate 2000 click events. 
+Open up the JobManager UI
+localhost:8081
+
+
+Run the Job:
+
+```bash
+docker exec jobmanager ./bin/flink run --python code/attribute_successful_applications.py
+```
+
 
 
