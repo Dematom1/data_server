@@ -28,7 +28,7 @@ CREATE TABLE attributed_successful_applications (
     username VARCHAR NOT NULL,
     event_id VARCHAR,
     user_agent VARCHAR,
-    ip_address VARCHAR
+    ip_address VARCHAR,
     job_uuid VARCHAR(255),
     job_title VARCHAR(255),
     company_name VARCHAR(255),
