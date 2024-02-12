@@ -17,7 +17,7 @@ CREATE TABLE events (
     event_time TIMESTAMP WITH TIME ZONE NOT NULL,
     event_type VARCHAR(255) NOT NULL,
     template_name VARCHAR(255) NOT NULL,
-    element VARCHAR(255) NOT NULL,
+    tag VARCHAR(255) NOT NULL,
     user_id VARCHAR NOT NULL,
     ip_address VARCHAR(255) NOT NULL
 );
@@ -25,11 +25,15 @@ CREATE TABLE events (
 
 CREATE TABLE attributed_successful_applications (
     job_application_id SERIAL PRIMARY KEY,
-    event_time TIMESTAMP WITH TIME ZONE NOT NULL,
-    user_id VARCHAR NOT NULL,
+    username VARCHAR NOT NULL,
+    event_id VARCHAR,
+    user_agent VARCHAR,
+    ip_address VARCHAR
     job_uuid VARCHAR(255),
-    job_desc VARCHAR(255),
-    company_name VARCHAR(255)
+    job_title VARCHAR(255),
+    company_name VARCHAR(255),
+    applied_at TIMESTAMP WITH TIME ZONE,
+    click_time TIMESTAMP WITH TIME ZONE
 );
 
     
