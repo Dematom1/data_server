@@ -1,5 +1,5 @@
 CREATE TABLE applications (
-    application_id INT,
+    application_id STRING,
     event_time TIMESTAMP(3),
     user_id INT,
     user_agent STRING,

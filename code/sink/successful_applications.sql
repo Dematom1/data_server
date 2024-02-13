@@ -1,5 +1,5 @@
 CREATE TABLE attributed_successful_applications (
-    application_id INT,
+    application_id STRING,
     username STRING,
     event_id INT,
     user_agent STRING,
