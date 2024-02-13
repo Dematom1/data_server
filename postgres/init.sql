@@ -24,7 +24,7 @@ CREATE TABLE events (
 
 
 CREATE TABLE attributed_successful_applications (
-    job_application_id SERIAL PRIMARY KEY,
+    application_id VARCHAR PRIMARY KEY,
     username VARCHAR NOT NULL,
     event_id VARCHAR,
     user_agent VARCHAR,
