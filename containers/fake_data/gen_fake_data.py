@@ -27,13 +27,13 @@ def gen_fake_user(n_users:int ) -> None:
 
     return 
 
-def gen_click_event(user_id: str, job_uuid:str = None) -> dict:
+def gen_click_event(user_id: str, job_uuid: str = None) -> dict:
         user_agent: str = fake.user_agent()
-        event_time: datetime = datetime.utcnow().isoformat()
-        event_type: str = 'click' if job_uuid else fake.job_event_type()
-        template_name: str  = 'job_detail' if job_uuid else fake.job_template_name()
-        element: str = 'apply' if job_uuid else fake.job_element()
-        job_id: str = job_uuid or str(uuid4())
+        event_time: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+        event_type: str = fake.job_event_type()
+        template_name: str  = fake.job_template_name()
+        element: str = fake.job_element()
+        job_uuid: str = job_uuid or str(uuid4())
         ip_address: str = fake.ipv4()
         
         click_event = {
@@ -42,23 +42,27 @@ def gen_click_event(user_id: str, job_uuid:str = None) -> dict:
             'job_uuid': job_uuid,
             'event_type': event_type,
             'template_name': template_name,
-            'element': element,
+            'tag': element,
+            'job_uuid': job_uuid,
             'user_id': user_id,
             'ip_address': ip_address
         }
         return click_event
 
-def gen_successful_job_applications(user_id: str, job_uuid:str) -> dict:
-    event_type: datetime = datetime.utcnow().isoformat()
-    job_uuid = job_uuid or str(uuid4())
-    job_desc: str = fake.job_description()
+def gen_successful_job_application(event: dict) -> dict:
+    event_time: datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+    job_title: str = fake.job_description()
     company_name: str = fake.company()
+    application_id: str = str(uuid4())
     
     attr_job_applications = {
-        'event_type': event_type,
-        'user_id': user_id,
-        'job_uuid': job_uuid,
-        'job_desc': job_desc,
+        'application_id': application_id,
+        'event_time': event_time,
+        'user_id': event['user_id'],
+        'user_agent': event['user_agent'],
+        'ip_address': event['ip_address'],
+        'job_uuid': event['job_uuid'],
+        'job_title': job_title,
         'company_name': company_name
     }
     
@@ -85,18 +89,21 @@ def gen_user_click_data(num_records: int) -> None:
         
         # Generate and push a click event
         event = gen_click_event(user_id)
+        print(event)
         push_to_kafka(event, 'clicks')
 
         # 60% chance to proceed to application after click
         if random.randint(0, 100) < 60:
             # Create a click event for click on apply now
             apply_event = gen_click_event(user_id, event['job_uuid'])
+            print(apply_event)
             push_to_kafka(apply_event, 'clicks')
 
             # 40% chance that the user completes the application on the company's job page
             if random.randint(0, 100) < 40:
                 # Create corresponding successful job application
-                success_event = gen_successful_job_applications(apply_event['user_id'], apply_event['job_uuid'])
+                success_event = gen_successful_job_application(apply_event)
+                print(success_event)
                 push_to_kafka(success_event, 'applications')
 
 
